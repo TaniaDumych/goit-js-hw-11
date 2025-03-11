@@ -18,6 +18,6 @@ export async function fetchImages(query) {
     return response.data.hits;
   } catch (error) {
     console.error('Error fetching images:', error);
-    return [];
+    throw error;
   }
 }
