@@ -1,5 +1,8 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
 
 const gallery = document.querySelector('.gallery');
 let lightbox;
@@ -39,6 +42,5 @@ export function renderImages(images) {
 }
 
 export function clearGallery() {
- const gallery = document.querySelector('.gallery');
   gallery.innerHTML = '';
 }
