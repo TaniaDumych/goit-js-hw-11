@@ -2,7 +2,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const gallery = document.querySelector('.gallery');
-
+let lightbox;
 export function renderImages(images) {
   if (!images.length) {
     iziToast.error({
@@ -31,9 +31,11 @@ export function renderImages(images) {
     .join('');
 
   gallery.innerHTML = markup;
-  
-  const lightbox = new SimpleLightbox('.gallery a');
-  lightbox.refresh();
+    if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 });
+  } else {
+    lightbox.refresh();
+  }
 }
 
 export function clearGallery() {
