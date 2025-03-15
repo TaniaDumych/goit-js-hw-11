@@ -153,7 +153,17 @@ button[type="submit"]:focus {
   font-weight: bold;
   color: #333;
 }
-
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 .loader {
   display: flex;
   justify-content: center;
@@ -169,7 +179,10 @@ button[type="submit"]:focus {
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
-
+.loader.visually-hidden {
+  position: absolute;
+  visibility: hidden;
+}
 
 @keyframes spin {
   0% {

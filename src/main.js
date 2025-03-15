@@ -1,52 +1,38 @@
 
-import { fetchImages } from './js/pixabay-api.js';
-import { renderImages, clearGallery } from './js/render-functions.js';
-import iziToast from 'izitoast';
+import { renderImages } from "./js/render-functions";
+import { fetchImages } from "./js/pixabay-api";
+import iziToast from "izitoast";
 import 'izitoast/dist/css/iziToast.min.css';
 
-document.addEventListener('DOMContentLoaded', () => {
-const form = document.querySelector('.form');
-const loader = document.querySelector('.loader');
- if (!form) {
-   console.error('Form not found');
-   return;
-}
-
-if (!loader) {
-  console.error('Loader not found');
-  return;
-}
-
-function showLoader() {
-  loader.classList.add('active');
-}
-
-function hideLoader() {
-  loader.classList.remove('active');
-}
+const form = document.querySelector(`form`);
+const gallery = document.querySelector(`.gallery`);
+const loader = document.querySelector(`.loader`);
 
 
+form.addEventListener(`submit`, async(event)=>{
+    event.preventDefault();
 
+    const query = event.target.elements[`search-text`].value.trim();
+    if (!query){
+        iziToast.error({title: `Error`, message: `Please enter a search query!`});
+        return;
+    }
 
-form.addEventListener('submit', async (event) => {
-  event.preventDefault();
+    gallery.innerHTML = ``;
+    loader.classList.remove(`visually-hidden`);
+    try{
+        const images = await fetchImages(query);
+        console.log(images);
+        
+        if(images.length === 0){
+            iziToast.warning({title: `Oops!`, message: `No images found. Try again!`});
+        }else{
+            renderImages(images);
+        }
+    }catch(error){
+        iziToast.error({title: `Error`, message: ` Failed to fetch images. Try again later!`});
+    }finally{
+        loader.classList.add(`visually-hidden`);
+    }
 
-  const query = event.target.elements['search-text'].value.trim();
-  if (!query) {
-    iziToast.warning({ title: 'Warning', message: 'Please enter a search term!' });
-    return;
-  }
-
-  clearGallery();
-  showLoader(); 
-
-  try {
-    const images = await fetchImages(query);
-    renderImages(images);
-  } catch (error) {
-    iziToast.error({ title: 'Error', message: 'Something went wrong! Please try again.' });
-  } finally {
-    hideLoader();
-  }
 });
-  });
